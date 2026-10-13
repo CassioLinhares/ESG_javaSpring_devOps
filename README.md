@@ -255,3 +255,62 @@ Para executar os testes:
 ```bash
 .\mvnw.cmd test
 ```
+
+## Docker
+
+A imagem é gerada em duas etapas pelo `Dockerfile`: a primeira compila o projeto com o Maven Wrapper e a segunda executa apenas o `.jar` em uma JRE 21 com usuário sem privilégios.
+
+```bash
+docker build -t spring-backend-esg .
+```
+
+## Docker Compose
+
+O `docker-compose.yml` sobe a aplicação junto com um Oracle XE 21:
+
+| Recurso | Descrição |
+| --- | --- |
+| `oracle` | Banco Oracle XE com o usuário da aplicação criado no PDB `XEPDB1` |
+| `app` | API Spring Boot, iniciada somente após o banco ficar saudável |
+| `oracle-data` | Volume nomeado com os dados do banco |
+| `esg-network` | Rede bridge usada na comunicação entre os serviços |
+
+As variáveis de ambiente ficam em um arquivo `.env` (modelo em `.env.example`):
+
+| Variável | Uso | Padrão |
+| --- | --- | --- |
+| `APP_IMAGE` | Imagem da aplicação | `spring-backend-esg:latest` |
+| `APP_PORT` | Porta exposta no host | `8080` |
+| `ORACLE_PASSWORD` | Senha do `SYSTEM` do Oracle | `oracle` |
+| `DB_USER` | Usuário da aplicação no banco | `esg` |
+| `DB_PASSWORD` | Senha do usuário da aplicação | `esg123` |
+| `JWT_SECRET` | Chave de assinatura do JWT | `troque-esta-chave` |
+
+```bash
+cp .env.example .env
+docker compose up -d --build
+docker compose ps
+docker compose down
+```
+
+Para apagar também os dados do banco:
+
+```bash
+docker compose down -v
+```
+
+## CI/CD
+
+O pipeline fica em `.github/workflows/ci-cd.yml` e roda no GitHub Actions a cada push e pull request para a `main`, ou manualmente pela aba Actions.
+
+| Job | O que faz |
+| --- | --- |
+| `Build` | Compila e empacota a aplicação com `./mvnw package` e publica o `.jar` como artefato |
+| `Testes` | Sobe um Oracle XE como service container e executa `./mvnw test` com as migrations do Flyway |
+| `Imagem Docker` | Gera a imagem pelo `Dockerfile` e, fora de pull requests, publica no GitHub Container Registry com as tags do commit e `latest` |
+| `Deploy Staging` | Usa o environment `staging`, sobe a imagem publicada com o Docker Compose e valida cadastro e login na API |
+| `Deploy Produção` | Usa o environment `production` e só roda depois do staging concluir com sucesso |
+
+Em pull requests rodam build, testes e a geração da imagem. Os deploys rodam em push na `main` ou pela execução manual.
+
+Os environments `staging` e `production` podem ser configurados em Settings > Environments. Neles é possível exigir aprovação manual antes do deploy e cadastrar os secrets `ORACLE_PASSWORD`, `DB_PASSWORD` e `JWT_SECRET` e a variável `DB_USER`. Sem esses valores o pipeline usa os padrões do `.env.example`.
