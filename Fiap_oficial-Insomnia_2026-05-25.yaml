@@ -1,0 +1,1537 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: FIAP_OFICIAL Spring Backend ESG
+meta:
+  id: wrk_f0b94a3c41d04f7bb9f15d45d9010cdc
+  created: 1779744881049
+  modified: 1779749434679
+  description: ""
+collection:
+  - name: Autenticação
+    meta:
+      id: fld_242e25be46334bcaaabe41e9331f69ad
+      created: 0
+      modified: 1779745272008
+      sortKey: 100
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/auth/register"
+        name: Register
+        meta:
+          id: req_45d8c5bb808446758f56f5a392caa718
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 100
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "Admin",
+              "email": "admin@example.com",
+              "senha": "123456",
+              "role": "ADMIN",
+              "empresa": {
+                "name": "Empresa ESG",
+                "cnpj": "12345678000199"
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/auth/login"
+        name: Login
+        meta:
+          id: req_9a8f67c4ccd344599deb3eb421487d86
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 200
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "email": "admin@example.com",
+              "senha": "123456"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Usuarios
+    meta:
+      id: fld_3de767af8e294ad5b17217cfd70b0d7a
+      created: 0
+      modified: 0
+      sortKey: 200
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/api/usuarios"
+        name: Criar usuario
+        meta:
+          id: req_7f2a9e08ff3c48cab87257c158ddb1fc
+          created: 0
+          modified: 1779745347092
+          isPrivate: false
+          description: ""
+          sortKey: 400
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "Usuario",
+              "email": "user@example.com",
+              "senha": "123456",
+              "role": "USER",
+              "empresa": {
+                "id": 1
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjYWxvcmlhcyIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiZXhwIjoxNzc5NzUyNDQxfQ.i9qBPD__AAgOJu2rZjYI9S1ud-bKUclEHOGf7TZRFX8
+          prefix: Bearer
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/usuarios/1"
+        name: Buscar usuario por id
+        meta:
+          id: req_b26ae18f4a7649b7a1bd82509b47eaff
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 200
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/usuarios"
+        name: Atualizar usuario
+        meta:
+          id: req_c065bc57130a4227b1b1adfb6986ae20
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 500
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "id": 1,
+              "nome": "Usuario Atualizado",
+              "email": "usuario@example.com",
+              "senha": "123456",
+              "role": "OPERADOR",
+              "empresa": {
+                "id": 1
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/usuarios/1"
+        name: Deletar usuario
+        meta:
+          id: req_f132a99a3fa84471826e842bb8dfddc7
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 600
+        method: DELETE
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/usuarios/"
+        name: Buscar usuario por nome
+        meta:
+          id: req_f225cdf2b6244efd82a614ad935a6ebc
+          created: 0
+          modified: 1779745606910
+          isPrivate: false
+          description: ""
+          sortKey: 300
+        method: GET
+        parameters:
+          - name: nome
+            value: Admin
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjYWxvcmlhcyIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiZXhwIjoxNzc5NzUyNDQxfQ.i9qBPD__AAgOJu2rZjYI9S1ud-bKUclEHOGf7TZRFX8
+          prefix: Bearer
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/usuarios"
+        name: Listar usuarios
+        meta:
+          id: req_f797ea824c5c41f39038e4e0862b487f
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 100
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Setores
+    meta:
+      id: fld_445fcfc1741a43acba5029a468b045fa
+      created: 0
+      modified: 0
+      sortKey: 400
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/api/setores"
+        name: Listar setores
+        meta:
+          id: req_053f0a907d55486f9fdb2fe15eb3c815
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 100
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/setores/1"
+        name: Deletar setor
+        meta:
+          id: req_3776674ac32649ffa63507344b1e53ca
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 600
+        method: DELETE
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/setores"
+        name: Criar setor
+        meta:
+          id: req_3babbd8a985b4b758a824d68da0c1ac6
+          created: 0
+          modified: 1779745626701
+          isPrivate: false
+          description: ""
+          sortKey: 400
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "Producao",
+              "empresa": {
+                "id": 1
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjYWxvcmlhcyIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiZXhwIjoxNzc5NzUyNDQxfQ.i9qBPD__AAgOJu2rZjYI9S1ud-bKUclEHOGf7TZRFX8
+          prefix: Bearer
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/setores/"
+        name: Buscar setor por nome
+        meta:
+          id: req_3e8147076097497591d870a43b0a4572
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 300
+        method: GET
+        parameters:
+          - name: nome
+            value: Producao
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/setores/1"
+        name: Buscar setor por id
+        meta:
+          id: req_5575eee0662047be9c7b65931fafb67f
+          created: 0
+          modified: 1779745661694
+          isPrivate: false
+          description: ""
+          sortKey: 200
+        method: GET
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjYWxvcmlhcyIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiZXhwIjoxNzc5NzUyNDQxfQ.i9qBPD__AAgOJu2rZjYI9S1ud-bKUclEHOGf7TZRFX8
+          prefix: Bearer
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/setores"
+        name: Atualizar setor
+        meta:
+          id: req_aa4b8d3ff22841baa104a56bf22411f1
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 500
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "id": 1,
+              "nome": "Producao Atualizada",
+              "empresa": {
+                "id": 1
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Equipamentos
+    meta:
+      id: fld_51a693de4cd74709a4fc67af1ce4d92a
+      created: 0
+      modified: 0
+      sortKey: 500
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/api/equipamentos/1"
+        name: Buscar equipamento por id
+        meta:
+          id: req_094e9cf2426e46d6a839aec72fad5408
+          created: 0
+          modified: 1779745708356
+          isPrivate: false
+          description: ""
+          sortKey: 200
+        method: GET
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjYWxvcmlhcyIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiZXhwIjoxNzc5NzUyNDQxfQ.i9qBPD__AAgOJu2rZjYI9S1ud-bKUclEHOGf7TZRFX8
+          prefix: Bearer
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/equipamentos/"
+        name: Buscar equipamentos por setor
+        meta:
+          id: req_0c32288a18824018be47966ba8a1e528
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 400
+        method: GET
+        parameters:
+          - name: setorId
+            value: "1"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/equipamentos/"
+        name: Buscar equipamento por nome
+        meta:
+          id: req_5be35a90458d4fae9aef55fc77e07c8e
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 300
+        method: GET
+        parameters:
+          - name: nome
+            value: Motor
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/equipamentos"
+        name: Atualizar equipamento
+        meta:
+          id: req_a7cfecbb2bb34a9dadb5415d3a557ab8
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 600
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "id": 1,
+              "nome": "Motor 01 Atualizado",
+              "tipo": "Motor",
+              "status": "ATIVO",
+              "setor": {
+                "id": 1
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/equipamentos"
+        name: Listar equipamentos
+        meta:
+          id: req_e5c57298d8d447a89001b68ba000eb27
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 100
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/equipamentos"
+        name: Criar equipamento
+        meta:
+          id: req_e69f17889b4847d6ad0a16b6cac7403d
+          created: 0
+          modified: 1779745684443
+          isPrivate: false
+          description: ""
+          sortKey: 500
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "Motor 01",
+              "tipo": "Motor",
+              "status": "ATIVO",
+              "setor": {
+                "id": 1
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjYWxvcmlhcyIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiZXhwIjoxNzc5NzUyNDQxfQ.i9qBPD__AAgOJu2rZjYI9S1ud-bKUclEHOGf7TZRFX8
+          prefix: Bearer
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/equipamentos/1"
+        name: Deletar equipamento
+        meta:
+          id: req_ed2895f5bbcb422f9d0819096d2a20ca
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 700
+        method: DELETE
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Consumos Energia
+    meta:
+      id: fld_92e1d2656c2c49dcbfbfd888088cecba
+      created: 0
+      modified: 0
+      sortKey: 600
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/consumos-energia/7"
+        name: Buscar consumo por id
+        meta:
+          id: req_0828f502bdce412ba2cd981a5d5c4a6f
+          created: 0
+          modified: 1779749044044
+          isPrivate: false
+          description: ""
+          sortKey: 200
+        method: GET
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjYWxvcmlhcyIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiZXhwIjoxNzc5NzU2MjA4fQ.sS-daeJcMQnzb903v8WnxbqmQPWAuqdGrfOCr-rv43A
+          prefix: Bearer
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/consumos-energia"
+        name: Criar consumo
+        meta:
+          id: req_2497778d2bdb4f39ba87d10be1ae6b34
+          created: 0
+          modified: 1779749571976
+          isPrivate: false
+          description: ""
+          sortKey: 500
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "consumoKwh": 145,
+              "equipamento": {
+                "id": 3
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjYWxvcmlhcyIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiZXhwIjoxNzc5NzU1NTAxfQ.AiOWf_daGpMiYf1tJQadMKRmaWutFiOgASiKJn656TI
+          prefix: Bearer
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/consumos-energia"
+        name: Listar consumos
+        meta:
+          id: req_36829d319e544ea485f3c73bb6f947c4
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 100
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/consumos-energia/1"
+        name: Deletar consumo
+        meta:
+          id: req_546d117f27414ae0bd35d4f885c5ce5f
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 700
+        method: DELETE
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/consumos-energia/soma"
+        name: Somar consumo por setor
+        meta:
+          id: req_75b092e269bd47d0a585fe8259f8184f
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 400
+        method: GET
+        parameters:
+          - name: setorId
+            value: "1"
+          - name: inicio
+            value: 2026-05-01T00:00:00
+          - name: fim
+            value: 2026-05-31T23:59:59
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/consumos-energia/"
+        name: Buscar consumos por equipamento
+        meta:
+          id: req_919e0d835554461d9a7f46c290f0f598
+          created: 0
+          modified: 1779748825297
+          isPrivate: false
+          description: ""
+          sortKey: 300
+        method: GET
+        parameters:
+          - name: equipamentoId
+            value: "1"
+            disabled: false
+        authentication:
+          type: bearer
+          token: "\"C:\\Program Files\\Java\\jdk-25.0.3\\bin\\java.exe\"
+            -XX:TieredStopAtLevel=1 -Dspring.output.ansi.enabled=always
+            -Dcom.sun.management.jmxremote -Dspring.jmx.enabled=true
+            -Dspring.liveBeansView.mbeanDomain
+            -Dspring.application.admin.enabled=true
+            \"-Dmanagement.endpoints.jmx.exposure.include=*\"
+            \"-javaagent:C:\\Program Files\\JetBrains\\IntelliJ IDEA
+            2026.1.1\\lib\\idea_rt.jar=59340\" -Dfile.encoding=UTF-8
+            -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -classpath
+            \"C:\\Users\\cassi\\OneDrive\\Área de Trabalho\\FIAP\\Ano
+            2\\JAVA\\spring_backend_esg\\target\\classes;C:\\Users\\cassi\\.m2\
+            \\repository\\org\\springframework\\boot\\spring-boot-starter-data-\
+            jpa\\4.0.6\\spring-boot-starter-data-jpa-4.0.6.jar;C:\\Users\\cassi\
+            \\.m2\\repository\\org\\springframework\\boot\\spring-boot-starter\
+            \\4.0.6\\spring-boot-starter-4.0.6.jar;C:\\Users\\cassi\\.m2\\repos\
+            itory\\org\\springframework\\boot\\spring-boot-starter-logging\\4.0\
+            .6\\spring-boot-starter-logging-4.0.6.jar;C:\\Users\\cassi\\.m2\\re\
+            pository\\ch\\qos\\logback\\logback-classic\\1.5.32\\logback-classi\
+            c-1.5.32.jar;C:\\Users\\cassi\\.m2\\repository\\ch\\qos\\logback\\l\
+            ogback-core\\1.5.32\\logback-core-1.5.32.jar;C:\\Users\\cassi\\.m2\
+            \\repository\\org\\apache\\logging\\log4j\\log4j-to-slf4j\\2.25.4\\\
+            log4j-to-slf4j-2.25.4.jar;C:\\Users\\cassi\\.m2\\repository\\org\\a\
+            pache\\logging\\log4j\\log4j-api\\2.25.4\\log4j-api-2.25.4.jar;C:\\\
+            Users\\cassi\\.m2\\repository\\org\\slf4j\\jul-to-slf4j\\2.0.17\\ju\
+            l-to-slf4j-2.0.17.jar;C:\\Users\\cassi\\.m2\\repository\\jakarta\\a\
+            nnotation\\jakarta.annotation-api\\3.0.0\\jakarta.annotation-api-3.\
+            0.0.jar;C:\\Users\\cassi\\.m2\\repository\\org\\yaml\\snakeyaml\\2.5\
+            \\snakeyaml-2.5.jar;C:\\Users\\cassi\\.m2\\repository\\org\\springf\
+            ramework\\boot\\spring-boot-starter-jdbc\\4.0.6\\spring-boot-starte\
+            r-jdbc-4.0.6.jar;C:\\Users\\cassi\\.m2\\repository\\com\\zaxxer\\Hi\
+            kariCP\\7.0.2\\HikariCP-7.0.2.jar;C:\\Users\\cassi\\.m2\\repository\
+            \\org\\slf4j\\slf4j-api\\2.0.17\\slf4j-api-2.0.17.jar;C:\\Users\\ca\
+            ssi\\.m2\\repository\\org\\springframework\\boot\\spring-boot-data-\
+            jpa\\4.0.6\\spring-boot-data-jpa-4.0.6.jar;C:\\Users\\cassi\\.m2\\r\
+            epository\\org\\springframework\\boot\\spring-boot-data-commons\\4.\
+            0.6\\spring-boot-data-commons-4.0.6.jar;C:\\Users\\cassi\\.m2\\repo\
+            sitory\\org\\springframework\\boot\\spring-boot-persistence\\4.0.6\
+            \\spring-boot-persistence-4.0.6.jar;C:\\Users\\cassi\\.m2\\reposito\
+            ry\\org\\springframework\\data\\spring-data-commons\\4.0.5\\spring-\
+            data-commons-4.0.5.jar;C:\\Users\\cassi\\.m2\\repository\\org\\spri\
+            ngframework\\boot\\spring-boot-hibernate\\4.0.6\\spring-boot-hibern\
+            ate-4.0.6.jar;C:\\Users\\cassi\\.m2\\repository\\org\\springframewo\
+            rk\\boot\\spring-boot-jpa\\4.0.6\\spring-boot-jpa-4.0.6.jar;C:\\Use\
+            rs\\cassi\\.m2\\repository\\jakarta\\persistence\\jakarta.persisten\
+            ce-api\\3.2.0\\jakarta.persistence-api-3.2.0.jar;C:\\Users\\cassi\\\
+            .m2\\repository\\org\\hibernate\\orm\\hibernate-core\\7.2.12.Final\
+            \\hibernate-core-7.2.12.Final.jar;C:\\Users\\cassi\\.m2\\repository\
+            \\jakarta\\transaction\\jakarta.transaction-api\\2.0.1\\jakarta.tra\
+            nsaction-api-2.0.1.jar;C:\\Users\\cassi\\.m2\\repository\\org\\hibe\
+            rnate\\models\\hibernate-models\\1.0.1\\hibernate-models-1.0.1.jar;\
+            C:\\Users\\cassi\\.m2\\repository\\org\\glassfish\\jaxb\\jaxb-runti\
+            me\\4.0.6\\jaxb-runtime-4.0.6.jar;C:\\Users\\cassi\\.m2\\repository\
+            \\org\\glassfish\\jaxb\\jaxb-core\\4.0.6\\jaxb-core-4.0.6.jar;C:\\U\
+            sers\\cassi\\.m2\\repository\\org\\eclipse\\angus\\angus-activation\
+            \\2.0.3\\angus-activation-2.0.3.jar;C:\\Users\\cassi\\.m2\\reposito\
+            ry\\org\\glassfish\\jaxb\\txw2\\4.0.6\\txw2-4.0.6.jar;C:\\Users\\ca\
+            ssi\\.m2\\repository\\com\\sun\\istack\\istack-commons-runtime\\4.1\
+            .2\\istack-commons-runtime-4.1.2.jar;C:\\Users\\cassi\\.m2\\reposit\
+            ory\\jakarta\\inject\\jakarta.inject-api\\2.0.1\\jakarta.inject-api\
+            -2.0.1.jar;C:\\Users\\cassi\\.m2\\repository\\org\\springframework\
+            \\spring-orm\\7.0.7\\spring-orm-7.0.7.jar;C:\\Users\\cassi\\.m2\\re\
+            pository\\org\\springframework\\data\\spring-data-jpa\\4.0.5\\sprin\
+            g-data-jpa-4.0.5.jar;C:\\Users\\cassi\\.m2\\repository\\org\\spring\
+            framework\\spring-tx\\7.0.7\\spring-tx-7.0.7.jar;C:\\Users\\cassi\\\
+            .m2\\repository\\org\\antlr\\antlr4-runtime\\4.13.2\\antlr4-runtime\
+            -4.13.2.jar;C:\\Users\\cassi\\.m2\\repository\\org\\springframework\
+            \\spring-aspects\\7.0.7\\spring-aspects-7.0.7.jar;C:\\Users\\cassi\
+            \\.m2\\repository\\org\\aspectj\\aspectjweaver\\1.9.25.1\\aspectjwe\
+            aver-1.9.25.1.jar;C:\\Users\\cassi\\.m2\\repository\\org\\springfra\
+            mework\\boot\\spring-boot-jdbc\\4.0.6\\spring-boot-jdbc-4.0.6.jar;C:\
+            \\Users\\cassi\\.m2\\repository\\org\\springframework\\boot\\spring\
+            -boot-sql\\4.0.6\\spring-boot-sql-4.0.6.jar;C:\\Users\\cassi\\.m2\\\
+            repository\\org\\springframework\\boot\\spring-boot-transaction\\4.\
+            0.6\\spring-boot-transaction-4.0.6.jar;C:\\Users\\cassi\\.m2\\repos\
+            itory\\org\\springframework\\spring-jdbc\\7.0.7\\spring-jdbc-7.0.7.\
+            jar;C:\\Users\\cassi\\.m2\\repository\\org\\springframework\\boot\\\
+            spring-boot-starter-flyway\\4.0.6\\spring-boot-starter-flyway-4.0.6\
+            .jar;C:\\Users\\cassi\\.m2\\repository\\org\\springframework\\boot\
+            \\spring-boot-flyway\\4.0.6\\spring-boot-flyway-4.0.6.jar;C:\\Users\
+            \\cassi\\.m2\\repository\\org\\springframework\\boot\\spring-boot-s\
+            tarter-security\\4.0.6\\spring-boot-starter-security-4.0.6.jar;C:\\\
+            Users\\cassi\\.m2\\repository\\org\\springframework\\boot\\spring-b\
+            oot-security\\4.0.6\\spring-boot-security-4.0.6.jar;C:\\Users\\cassi\
+            \\.m2\\repository\\org\\springframework\\security\\spring-security-\
+            config\\7.0.5\\spring-security-config-7.0.5.jar;C:\\Users\\cassi\\.\
+            m2\\repository\\org\\springframework\\security\\spring-security-core\
+            \\7.0.5\\spring-security-core-7.0.5.jar;C:\\Users\\cassi\\.m2\\repo\
+            sitory\\org\\springframework\\security\\spring-security-crypto\\7.0\
+            .5\\spring-security-crypto-7.0.5.jar;C:\\Users\\cassi\\.m2\\reposit\
+            ory\\org\\springframework\\security\\spring-security-web\\7.0.5\\sp\
+            ring-security-web-7.0.5.jar;C:\\Users\\cassi\\.m2\\repository\\org\
+            \\springframework\\spring-expression\\7.0.7\\spring-expression-7.0.\
+            7.jar;C:\\Users\\cassi\\.m2\\repository\\org\\springframework\\spri\
+            ng-aop\\7.0.7\\spring-aop-7.0.7.jar;C:\\Users\\cassi\\.m2\\reposito\
+            ry\\org\\springframework\\spring-beans\\7.0.7\\spring-beans-7.0.7.j\
+            ar;C:\\Users\\cassi\\.m2\\repository\\org\\springframework\\spring-\
+            core\\7.0.7\\spring-core-7.0.7.jar;C:\\Users\\cassi\\.m2\\repository\
+            \\commons-logging\\commons-logging\\1.3.6\\commons-logging-1.3.6.ja\
+            r;C:\\Users\\cassi\\.m2\\repository\\org\\jspecify\\jspecify\\1.0.0\
+            \\jspecify-1.0.0.jar;C:\\Users\\cassi\\.m2\\repository\\org\\spring\
+            framework\\boot\\spring-boot-starter-validation\\4.0.6\\spring-boot\
+            -starter-validation-4.0.6.jar;C:\\Users\\cassi\\.m2\\repository\\org\
+            \\springframework\\boot\\spring-boot-validation\\4.0.6\\spring-boot\
+            -validation-4.0.6.jar;C:\\Users\\cassi\\.m2\\repository\\org\\apache\
+            \\tomcat\\embed\\tomcat-embed-el\\11.0.21\\tomcat-embed-el-11.0.21.\
+            jar;C:\\Users\\cassi\\.m2\\repository\\org\\hibernate\\validator\\h\
+            ibernate-validator\\9.0.1.Final\\hibernate-validator-9.0.1.Final.ja\
+            r;C:\\Users\\cassi\\.m2\\repository\\jakarta\\validation\\jakarta.v\
+            alidation-api\\3.1.1\\jakarta.validation-api-3.1.1.jar;C:\\Users\\c\
+            assi\\.m2\\repository\\org\\jboss\\logging\\jboss-logging\\3.6.3.Fi\
+            nal\\jboss-logging-3.6.3.Final.jar;C:\\Users\\cassi\\.m2\\repository\
+            \\com\\fasterxml\\classmate\\1.7.3\\classmate-1.7.3.jar;C:\\Users\\\
+            cassi\\.m2\\repository\\org\\springframework\\boot\\spring-boot-sta\
+            rter-webmvc\\4.0.6\\spring-boot-starter-webmvc-4.0.6.jar;C:\\Users\
+            \\cassi\\.m2\\repository\\org\\springframework\\boot\\spring-boot-s\
+            tarter-jackson\\4.0.6\\spring-boot-starter-jackson-4.0.6.jar;C:\\Us\
+            ers\\cassi\\.m2\\repository\\org\\springframework\\boot\\spring-boo\
+            t-jackson\\4.0.6\\spring-boot-jackson-4.0.6.jar;C:\\Users\\cassi\\.\
+            m2\\repository\\tools\\jackson\\core\\jackson-databind\\3.1.2\\jack\
+            son-databind-3.1.2.jar;C:\\Users\\cassi\\.m2\\repository\\tools\\ja\
+            ckson\\core\\jackson-core\\3.1.2\\jackson-core-3.1.2.jar;C:\\Users\
+            \\cassi\\.m2\\repository\\org\\springframework\\boot\\spring-boot-s\
+            tarter-tomcat\\4.0.6\\spring-boot-starter-tomcat-4.0.6.jar;C:\\Users\
+            \\cassi\\.m2\\repository\\org\\springframework\\boot\\spring-boot-s\
+            tarter-tomcat-runtime\\4.0.6\\spring-boot-starter-tomcat-runtime-4.\
+            0.6.jar;C:\\Users\\cassi\\.m2\\repository\\org\\apache\\tomcat\\emb\
+            ed\\tomcat-embed-core\\11.0.21\\tomcat-embed-core-11.0.21.jar;C:\\U\
+            sers\\cassi\\.m2\\repository\\org\\apache\\tomcat\\embed\\tomcat-em\
+            bed-websocket\\11.0.21\\tomcat-embed-websocket-11.0.21.jar;C:\\Users\
+            \\cassi\\.m2\\repository\\org\\springframework\\boot\\spring-boot-t\
+            omcat\\4.0.6\\spring-boot-tomcat-4.0.6.jar;C:\\Users\\cassi\\.m2\\r\
+            epository\\org\\springframework\\boot\\spring-boot-http-converter\\\
+            4.0.6\\spring-boot-http-converter-4.0.6.jar;C:\\Users\\cassi\\.m2\\\
+            repository\\org\\springframework\\spring-web\\7.0.7\\spring-web-7.0\
+            .7.jar;C:\\Users\\cassi\\.m2\\repository\\io\\micrometer\\micromete\
+            r-observation\\1.16.5\\micrometer-observation-1.16.5.jar;C:\\Users\
+            \\cassi\\.m2\\repository\\io\\micrometer\\micrometer-commons\\1.16.5\
+            \\micrometer-commons-1.16.5.jar;C:\\Users\\cassi\\.m2\\repository\\\
+            org\\springframework\\boot\\spring-boot-webmvc\\4.0.6\\spring-boot-\
+            webmvc-4.0.6.jar;C:\\Users\\cassi\\.m2\\repository\\org\\springfram\
+            ework\\boot\\spring-boot-servlet\\4.0.6\\spring-boot-servlet-4.0.6.\
+            jar;C:\\Users\\cassi\\.m2\\repository\\org\\springframework\\spring\
+            -webmvc\\7.0.7\\spring-webmvc-7.0.7.jar;C:\\Users\\cassi\\.m2\\repo\
+            sitory\\org\\flywaydb\\flyway-database-oracle\\11.14.1\\flyway-data\
+            base-oracle-11.14.1.jar;C:\\Users\\cassi\\.m2\\repository\\org\\fly\
+            waydb\\flyway-core\\11.14.1\\flyway-core-11.14.1.jar;C:\\Users\\cas\
+            si\\.m2\\repository\\org\\springframework\\boot\\spring-boot-devtoo\
+            ls\\4.0.6\\spring-boot-devtools-4.0.6.jar;C:\\Users\\cassi\\.m2\\re\
+            pository\\org\\springframework\\boot\\spring-boot\\4.0.6\\spring-bo\
+            ot-4.0.6.jar;C:\\Users\\cassi\\.m2\\repository\\org\\springframework\
+            \\spring-context\\7.0.7\\spring-context-7.0.7.jar;C:\\Users\\cassi\
+            \\.m2\\repository\\org\\springframework\\boot\\spring-boot-autoconf\
+            igure\\4.0.6\\spring-boot-autoconfigure-4.0.6.jar;C:\\Users\\cassi\
+            \\.m2\\repository\\com\\oracle\\database\\jdbc\\ojdbc11\\23.9.0.25.\
+            07\\ojdbc11-23.9.0.25.07.jar;C:\\Users\\cassi\\.m2\\repository\\org\
+            \\projectlombok\\lombok\\1.18.46\\lombok-1.18.46.jar;C:\\Users\\cas\
+            si\\.m2\\repository\\jakarta\\xml\\bind\\jakarta.xml.bind-api\\4.0.4\
+            \\jakarta.xml.bind-api-4.0.4.jar;C:\\Users\\cassi\\.m2\\repository\
+            \\jakarta\\activation\\jakarta.activation-api\\2.1.4\\jakarta.activ\
+            ation-api-2.1.4.jar;C:\\Users\\cassi\\.m2\\repository\\net\\bytebud\
+            dy\\byte-buddy\\1.17.8\\byte-buddy-1.17.8.jar;C:\\Users\\cassi\\.m2\
+            \\repository\\org\\springframework\\boot\\spring-boot-web-server\\4\
+            .0.6\\spring-boot-web-server-4.0.6.jar;C:\\Users\\cassi\\.m2\\repos\
+            itory\\com\\auth0\\java-jwt\\4.5.2\\java-jwt-4.5.2.jar;C:\\Users\\c\
+            assi\\.m2\\repository\\com\\fasterxml\\jackson\\core\\jackson-core\
+            \\2.21.2\\jackson-core-2.21.2.jar;C:\\Users\\cassi\\.m2\\repository\
+            \\com\\fasterxml\\jackson\\core\\jackson-databind\\2.21.2\\jackson-\
+            databind-2.21.2.jar;C:\\Users\\cassi\\.m2\\repository\\com\\fasterx\
+            ml\\jackson\\core\\jackson-annotations\\2.21\\jackson-annotations-2\
+            .21.jar\"
+            br.com.fiap.spring_backend_esg.SpringBackendEsgApplication  .   ___\
+            _          _            __ _ _ /\\\\ / ___'_ __ _ _(_)_ __  __ _ \\
+            \\ \\ \\( ( )\\___ | '_ | '_| | '_ \\/ _` | \\ \\ \\ \\ \\\\/  ___)|
+            |_)| | | | | || (_| |  ) ) ) )  '  |____| .__|_| |_|_| |_\\__, | / /
+            / / =========|_|==============|___/=/_/_/_/ :: Spring Boot
+            ::                (v4.0.6)2026-05-25T19:19:20.486-03:00  INFO 29956
+            --- [spring_backend_esg] [  restartedMain]
+            b.c.f.s.SpringBackendEsgApplication      : Starting
+            SpringBackendEsgApplication using Java 25.0.3 with PID 29956
+            (C:\\Users\\cassi\\OneDrive\\Área de Trabalho\\FIAP\\Ano
+            2\\JAVA\\spring_backend_esg\\target\\classes started by cassi in
+            C:\\Users\\cassi\\OneDrive\\Área de Trabalho\\FIAP\\Ano
+            2\\JAVA\\spring_backend_esg)2026-05-25T19:19:20.490-03:00  INFO
+            29956 --- [spring_backend_esg] [  restartedMain]
+            b.c.f.s.SpringBackendEsgApplication      : No active profile set,
+            falling back to 1 default profile:
+            \"default\"2026-05-25T19:19:20.548-03:00  INFO 29956 ---
+            [spring_backend_esg] [  restartedMain]
+            o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest
+            attribute in
+            C:\\Users\\cassi\\.m2\\repository\\com\\oracle\\database\\jdbc\\ojd\
+            bc11\\23.9.0.25.07\\ojdbc11-23.9.0.25.07.jar referenced one or more
+            files that do not exist:
+            file:/C:/Users/cassi/.m2/repository/com/oracle/database/jdbc/ojdbc1\
+            1/23.9.0.25.07/oraclepki.jar2026-05-25T19:19:20.548-03:00  INFO
+            29956 --- [spring_backend_esg] [  restartedMain]
+            .e.DevToolsPropertyDefaultsPostProcessor : Devtools property
+            defaults active! Set 'spring.devtools.add-properties' to 'false' to
+            disable2026-05-25T19:19:20.549-03:00  INFO 29956 ---
+            [spring_backend_esg] [  restartedMain]
+            .e.DevToolsPropertyDefaultsPostProcessor : For additional web
+            related logging consider setting the 'logging.level.web' property to
+            'DEBUG'2026-05-25T19:19:21.739-03:00  INFO 29956 ---
+            [spring_backend_esg] [  restartedMain]
+            .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data
+            JPA repositories in DEFAULT mode.2026-05-25T19:19:21.818-03:00  INFO
+            29956 --- [spring_backend_esg] [  restartedMain]
+            .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data
+            repository scanning in 67 ms. Found 6 JPA repository
+            interfaces.2026-05-25T19:19:22.526-03:00  INFO 29956 ---
+            [spring_backend_esg] [  restartedMain]
+            o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with
+            port 8080 (http)2026-05-25T19:19:22.540-03:00  INFO 29956 ---
+            [spring_backend_esg] [  restartedMain]
+            o.apache.catalina.core.StandardService   : Starting service
+            [Tomcat]2026-05-25T19:19:22.541-03:00  INFO 29956 ---
+            [spring_backend_esg] [  restartedMain]
+            o.apache.catalina.core.StandardEngine    : Starting Servlet engine:
+            [Apache Tomcat/11.0.21]2026-05-25T19:19:22.593-03:00  INFO 29956 ---
+            [spring_backend_esg] [  restartedMain]
+            b.w.c.s.WebApplicationContextInitializer : Root
+            WebApplicationContext: initialization completed in 2043
+            ms2026-05-25T19:19:23.049-03:00  INFO 29956 --- [spring_backend_esg]
+            [  restartedMain] com.zaxxer.hikari.HikariDataSource       :
+            HikariPool-1 - Starting...2026-05-25T19:19:24.424-03:00  INFO 29956
+            --- [spring_backend_esg] [  restartedMain]
+            com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added
+            connection
+            oracle.jdbc.driver.T4CConnection@223a2152026-05-25T19:19:24.428-03:\
+            00  INFO 29956 --- [spring_backend_esg] [  restartedMain]
+            com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start
+            completed.2026-05-25T19:19:24.558-03:00  INFO 29956 ---
+            [spring_backend_esg] [  restartedMain]
+            org.flywaydb.core.FlywayExecutor         : Database:
+            jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL (Oracle
+            19.3)2026-05-25T19:19:25.506-03:00  INFO 29956 ---
+            [spring_backend_esg] [  restartedMain]
+            o.f.core.internal.command.DbValidate     : Successfully validated 7
+            migrations (execution time
+            00:00.158s)2026-05-25T19:19:26.071-03:00  INFO 29956 ---
+            [spring_backend_esg] [  restartedMain]
+            o.f.core.internal.command.DbMigrate      : Current version of schema
+            \"RM565388\": 62026-05-25T19:19:26.132-03:00  INFO 29956 ---
+            [spring_backend_esg] [  restartedMain]
+            o.f.core.internal.command.DbMigrate      : Schema \"RM565388\" is up
+            to date. No migration necessary.2026-05-25T19:19:26.311-03:00  INFO
+            29956 --- [spring_backend_esg] [  restartedMain]
+            org.hibernate.orm.jpa                    : HHH008540: Processing
+            PersistenceUnitInfo [name:
+            default]2026-05-25T19:19:26.371-03:00  INFO 29956 ---
+            [spring_backend_esg] [  restartedMain]
+            org.hibernate.orm.core                   : HHH000001: Hibernate ORM
+            core version 7.2.12.Final2026-05-25T19:19:27.102-03:00  INFO 29956
+            --- [spring_backend_esg] [  restartedMain]
+            o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup:
+            ignoring JPA class transformer2026-05-25T19:19:27.405-03:00  WARN
+            29956 --- [spring_backend_esg] [  restartedMain]
+            org.hibernate.orm.jdbc                   : HHH100123: Low default
+            JDBC fetch size: 10 (consider setting
+            'hibernate.jdbc.fetch_size')2026-05-25T19:19:27.413-03:00  INFO
+            29956 --- [spring_backend_esg] [  restartedMain]
+            org.hibernate.orm.connections.pooling    : HHH10001005: Database
+            info:\tDatabase JDBC URL
+            [jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL]\tDatabase driver:
+            Oracle JDBC driver\tDatabase dialect: OracleDialect\tDatabase
+            version: 19.3\tDefault catalog/schema:
+            undefined/RM565388\tAutocommit mode: undefined/unknown\tIsolation
+            level: READ_COMMITTED [default READ_COMMITTED]\tJDBC fetch size:
+            10\tPool: DataSourceConnectionProvider\tMinimum pool size:
+            undefined/unknown\tMaximum pool size:
+            undefined/unknown2026-05-25T19:19:28.952-03:00  INFO 29956 ---
+            [spring_backend_esg] [  restartedMain]
+            org.hibernate.orm.core                   : HHH000489: No JTA
+            platform available (set 'hibernate.transaction.jta.platform' to
+            enable JTA platform integration)2026-05-25T19:19:28.963-03:00  INFO
+            29956 --- [spring_backend_esg] [  restartedMain]
+            j.LocalContainerEntityManagerFactoryBean : Initialized JPA
+            EntityManagerFactory for persistence unit
+            'default'2026-05-25T19:19:29.056-03:00  INFO 29956 ---
+            [spring_backend_esg] [  restartedMain]
+            o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in
+            classpath; If applicable, HQL parser will be
+            used.2026-05-25T19:19:30.103-03:00  INFO 29956 ---
+            [spring_backend_esg] [  restartedMain]
+            r$InitializeUserDetailsManagerConfigurer : Global
+            AuthenticationManager configured with UserDetailsService bean with
+            name authourizationService2026-05-25T19:19:30.306-03:00  WARN 29956
+            --- [spring_backend_esg] [  restartedMain]
+            JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view
+            is enabled by default. Therefore, database queries may be performed
+            during view rendering. Explicitly configure spring.jpa.open-in-view
+            to disable this warning2026-05-25T19:19:31.073-03:00  INFO 29956 ---
+            [spring_backend_esg] [  restartedMain]
+            o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port
+            8080 (http) with context path '/'2026-05-25T19:19:31.082-03:00  INFO
+            29956 --- [spring_backend_esg] [  restartedMain]
+            b.c.f.s.SpringBackendEsgApplication      : Started
+            SpringBackendEsgApplication in 11.09 seconds (process running for
+            11.973)2026-05-25T19:20:33.503-03:00  INFO 29956 ---
+            [spring_backend_esg] [nio-8080-exec-1]
+            o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring
+            DispatcherServlet
+            'dispatcherServlet'2026-05-25T19:20:33.503-03:00  INFO 29956 ---
+            [spring_backend_esg] [nio-8080-exec-1]
+            o.s.web.servlet.DispatcherServlet        : Initializing Servlet
+            'dispatcherServlet'2026-05-25T19:20:33.506-03:00  INFO 29956 ---
+            [spring_backend_esg] [nio-8080-exec-1]
+            o.s.web.servlet.DispatcherServlet        : Completed initialization
+            in 2
+            msHibernate:     select        u1_0.id,        u1_0.email,        u\
+            1_0.id_empresa,        u1_0.nome,        u1_0.role,        u1_0.sen\
+            ha     from        tbl_usuario
+            u1_0     where        u1_0.email=?Hibernate:     select        e1_0\
+            .id,        e1_0.cnpj,        e1_0.name     from        tbl_empresa
+            e1_0     where        e1_0.id=?Hibernate:     select        u1_0.id\
+            ,        u1_0.email,        u1_0.id_empresa,        u1_0.nome,        \
+            u1_0.role,        u1_0.senha     from        tbl_usuario
+            u1_0     where        u1_0.email=?Hibernate:     select        e1_0\
+            .id,        e1_0.cnpj,        e1_0.name     from        tbl_empresa
+            e1_0     where        e1_0.id=?Hibernate:     select        u1_0.id\
+            ,        u1_0.email,        u1_0.id_empresa,        u1_0.nome,        \
+            u1_0.role,        u1_0.senha     from        tbl_usuario
+            u1_0     where        u1_0.email=?Hibernate:     select        e1_0\
+            .id,        e1_0.cnpj,        e1_0.name     from        tbl_empresa
+            e1_0     where        e1_0.id=?Hibernate:     select        u1_0.id\
+            ,        u1_0.email,        u1_0.id_empresa,        u1_0.nome,        \
+            u1_0.role,        u1_0.senha     from        tbl_usuario
+            u1_0     where        u1_0.email=?Hibernate:     select        e1_0\
+            .id,        e1_0.cnpj,        e1_0.name     from        tbl_empresa
+            e1_0     where        e1_0.id=?Hibernate:     select        u1_0.id\
+            ,        u1_0.email,        u1_0.id_empresa,        u1_0.nome,        \
+            u1_0.role,        u1_0.senha     from        tbl_usuario
+            u1_0     where        u1_0.email=?Hibernate:     select        e1_0\
+            .id,        e1_0.cnpj,        e1_0.name     from        tbl_empresa
+            e1_0     where        e1_0.id=?Hibernate:     select        u1_0.id\
+            ,        u1_0.email,        u1_0.id_empresa,        u1_0.nome,        \
+            u1_0.role,        u1_0.senha     from        tbl_usuario
+            u1_0     where        u1_0.email=?Hibernate:     select        e1_0\
+            .id,        e1_0.cnpj,        e1_0.name     from        tbl_empresa
+            e1_0     where        e1_0.id=?Hibernate:     select        u1_0.id\
+            ,        u1_0.email,        u1_0.id_empresa,        u1_0.nome,        \
+            u1_0.role,        u1_0.senha     from        tbl_usuario
+            u1_0     where        u1_0.email=?Hibernate:     select        e1_0\
+            .id,        e1_0.cnpj,        e1_0.name     from        tbl_empresa
+            e1_0     where        e1_0.id=?Hibernate:     select        e1_0.id\
+            ,        e1_0.nome,        s1_0.id,        e2_0.id,        e2_0.cnp\
+            j,        e2_0.name,        s1_0.nome,        e1_0.status,        e\
+            1_0.tipo     from        tbl_equipamento e1_0     left
+            join        tbl_setor s1_0             on
+            s1_0.id=e1_0.id_setor     left join        tbl_empresa
+            e2_0             on
+            e2_0.id=s1_0.id_empresa     where        e1_0.id=?2026-05-25T19:23:\
+            12.050-03:00  WARN 29956 --- [spring_backend_esg] [nio-8080-exec-7]
+            .w.s.m.a.ResponseStatusExceptionResolver : Resolved
+            [br.com.fiap.spring_backend_esg.exception.RecursoNaoEncontradoExcep\
+            tion: Equipamento nao encontrado no banco de
+            dados!]2026-05-25T19:29:26.809-03:00  WARN 29956 ---
+            [spring_backend_esg] [l-1:housekeeper]
+            com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to
+            validate connection oracle.jdbc.driver.T4CConnection@14e91c9a
+            (ORA-17008: Conexão
+            fechadahttps://docs.oracle.com/error-help/db/ora-17008/). Possibly
+            consider using a shorter maxLifetime
+            value.2026-05-25T19:29:39.075-03:00  WARN 29956 ---
+            [spring_backend_esg] [l-1:housekeeper]
+            com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to
+            validate connection oracle.jdbc.driver.T4CConnection@33c8d864
+            (ORA-17008: Conexão
+            fechadahttps://docs.oracle.com/error-help/db/ora-17008/). Possibly
+            consider using a shorter maxLifetime
+            value.2026-05-25T19:29:51.639-03:00  WARN 29956 ---
+            [spring_backend_esg] [l-1:housekeeper]
+            com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to
+            validate connection oracle.jdbc.driver.T4CConnection@2b5f796f
+            (ORA-17008: Conexão
+            fechadahttps://docs.oracle.com/error-help/db/ora-17008/). Possibly
+            consider using a shorter maxLifetime
+            value.2026-05-25T19:30:16.097-03:00  WARN 29956 ---
+            [spring_backend_esg] [l-1:housekeeper]
+            com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to
+            validate connection oracle.jdbc.driver.T4CConnection@78f8e55
+            (ORA-17008: Conexão
+            fechadahttps://docs.oracle.com/error-help/db/ora-17008/). Possibly
+            consider using a shorter maxLifetime
+            value.2026-05-25T19:30:24.743-03:00  WARN 29956 ---
+            [spring_backend_esg] [l-1:housekeeper]
+            com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to
+            validate connection oracle.jdbc.driver.T4CConnection@42ba9f12
+            (ORA-17008: Conexão
+            fechadahttps://docs.oracle.com/error-help/db/ora-17008/). Possibly
+            consider using a shorter maxLifetime
+            value.2026-05-25T19:30:33.718-03:00  WARN 29956 ---
+            [spring_backend_esg] [l-1:housekeeper]
+            com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to
+            validate connection oracle.jdbc.driver.T4CConnection@28f08fd7
+            (ORA-17008: Conexão
+            fechadahttps://docs.oracle.com/error-help/db/ora-17008/). Possibly
+            consider using a shorter maxLifetime
+            value.2026-05-25T19:30:53.135-03:00  WARN 29956 ---
+            [spring_backend_esg] [l-1:housekeeper]
+            com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to
+            validate connection oracle.jdbc.driver.T4CConnection@4cc2c79b
+            (ORA-17008: Conexão
+            fechadahttps://docs.oracle.com/error-help/db/ora-17008/). Possibly
+            consider using a shorter maxLifetime
+            value.2026-05-25T19:30:59.090-03:00  WARN 29956 ---
+            [spring_backend_esg] [l-1:housekeeper]
+            com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to
+            validate connection oracle.jdbc.driver.T4CConnection@6f7f5f01
+            (ORA-17008: Conexão
+            fechadahttps://docs.oracle.com/error-help/db/ora-17008/). Possibly
+            consider using a shorter maxLifetime
+            value.2026-05-25T19:30:59.212-03:00  WARN 29956 ---
+            [spring_backend_esg] [l-1:housekeeper]
+            com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to
+            validate connection oracle.jdbc.driver.T4CConnection@685698dd
+            (ORA-17008: Conexão
+            fechadahttps://docs.oracle.com/error-help/db/ora-17008/). Possibly
+            consider using a shorter maxLifetime
+            value.2026-05-25T19:31:14.381-03:00  WARN 29956 ---
+            [spring_backend_esg] [l-1:housekeeper]
+            com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to
+            validate connection oracle.jdbc.driver.T4CConnection@223a215
+            (ORA-17008: Conexão
+            fechadahttps://docs.oracle.com/error-help/db/ora-17008/). Possibly
+            consider using a shorter maxLifetime
+            value.2026-05-25T19:31:18.327-03:00  WARN 29956 ---
+            [spring_backend_esg] [l-1:housekeeper]
+            com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to
+            validate connection oracle.jdbc.driver.T4CConnection@33a1952b
+            (ORA-17008: Conexão
+            fechadahttps://docs.oracle.com/error-help/db/ora-17008/). Possibly
+            consider using a shorter maxLifetime
+            value.2026-05-25T19:31:30.116-03:00  WARN 29956 ---
+            [spring_backend_esg] [nio-8080-exec-9]
+            com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to
+            validate connection oracle.jdbc.driver.T4CConnection@6e9457a0
+            (ORA-17008: Conexão
+            fechadahttps://docs.oracle.com/error-help/db/ora-17008/). Possibly
+            consider using a shorter maxLifetime
+            value.Hibernate:     select        u1_0.id,        u1_0.email,        \
+            u1_0.id_empresa,        u1_0.nome,        u1_0.role,        u1_0.se\
+            nha     from        tbl_usuario
+            u1_0     where        u1_0.email=?Hibernate:     select        e1_0\
+            .id,        e1_0.cnpj,        e1_0.name     from        tbl_empresa
+            e1_0     where        e1_0.id=?Hibernate:     select        e1_0.id\
+            ,        e1_0.nome,        s1_0.id,        e2_0.id,        e2_0.cnp\
+            j,        e2_0.name,        s1_0.nome,        e1_0.status,        e\
+            1_0.tipo     from        tbl_equipamento e1_0     left
+            join        tbl_setor s1_0             on
+            s1_0.id=e1_0.id_setor     left join        tbl_empresa
+            e2_0             on
+            e2_0.id=s1_0.id_empresa     where        e1_0.id=?2026-05-25T19:31:\
+            30.360-03:00  WARN 29956 --- [spring_backend_esg] [nio-8080-exec-9]
+            .w.s.m.a.ResponseStatusExceptionResolver : Resolved
+            [br.com.fiap.spring_backend_esg.exception.RecursoNaoEncontradoExcep\
+            tion: Equipamento nao encontrado no banco de
+            dados!]Hibernate:     select        u1_0.id,        u1_0.email,        \
+            u1_0.id_empresa,        u1_0.nome,        u1_0.role,        u1_0.se\
+            nha     from        tbl_usuario
+            u1_0     where        u1_0.email=?Hibernate:     select        e1_0\
+            .id,        e1_0.cnpj,        e1_0.name     from        tbl_empresa
+            e1_0     where        e1_0.id=?Hibernate:     select        u1_0.id\
+            ,        u1_0.email,        u1_0.id_empresa,        u1_0.nome,        \
+            u1_0.role,        u1_0.senha     from        tbl_usuario
+            u1_0     where        u1_0.email=?Hibernate:     select        e1_0\
+            .id,        e1_0.cnpj,        e1_0.name     from        tbl_empresa
+            e1_0     where        e1_0.id=?Hibernate:     select        e1_0.id\
+            ,        e1_0.nome,        s1_0.id,        e2_0.id,        e2_0.cnp\
+            j,        e2_0.name,        s1_0.nome,        e1_0.status,        e\
+            1_0.tipo     from        tbl_equipamento e1_0     left
+            join        tbl_setor s1_0             on
+            s1_0.id=e1_0.id_setor     left join        tbl_empresa
+            e2_0             on
+            e2_0.id=s1_0.id_empresa     where        e1_0.id=?2026-05-25T19:35:\
+            26.735-03:00  WARN 29956 --- [spring_backend_esg] [nio-8080-exec-2]
+            .w.s.m.a.ResponseStatusExceptionResolver : Resolved
+            [br.com.fiap.spring_backend_esg.exception.RecursoNaoEncontradoExcep\
+            tion: Equipamento nao encontrado no banco de dados!]"
+          prefix: Bearer
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/consumos-energia"
+        name: Atualizar consumo
+        meta:
+          id: req_9e82fe2b056b4b9f9338fbabfa3cf65c
+          created: 0
+          modified: 1779749403354
+          isPrivate: false
+          description: ""
+          sortKey: 600
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "id": 7,
+              "consumoKwh": 130.75,
+              "equipamento": {
+                "id": 1
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjYWxvcmlhcyIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiZXhwIjoxNzc5NzU2MjA4fQ.sS-daeJcMQnzb903v8WnxbqmQPWAuqdGrfOCr-rv43A
+          prefix: Bearer
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Alertas
+    meta:
+      id: fld_cf5bd8684ab042b081304646ba014050
+      created: 0
+      modified: 0
+      sortKey: 700
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/api/alertas"
+        name: Atualizar alerta
+        meta:
+          id: req_293b84eb569e41b5abf2b2692d22302b
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 500
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "id": 1,
+              "mensagem": "Consumo normalizado",
+              "setor": {
+                "id": 1
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/alertas"
+        name: Listar alertas
+        meta:
+          id: req_482349b380694cfba1a155255537646d
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 100
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/alertas/"
+        name: Buscar alertas por setor
+        meta:
+          id: req_8d3bc2a9587a412f8f8a408a14205c63
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 300
+        method: GET
+        parameters:
+          - name: setorId
+            value: "1"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/alertas/1"
+        name: Deletar alerta
+        meta:
+          id: req_990cb6a67ff64c7394b1ae50fde85b54
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 600
+        method: DELETE
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/alertas/1"
+        name: Buscar alerta por id
+        meta:
+          id: req_a7ec189128b741e892803d0bb8345faf
+          created: 0
+          modified: 1779749166962
+          isPrivate: false
+          description: ""
+          sortKey: 200
+        method: GET
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjYWxvcmlhcyIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiZXhwIjoxNzc5NzU2MjA4fQ.sS-daeJcMQnzb903v8WnxbqmQPWAuqdGrfOCr-rv43A
+          prefix: Bearer
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/alertas"
+        name: Criar alerta
+        meta:
+          id: req_c0f596c1b5a645ef9fb71274c3c6f130
+          created: 0
+          modified: 1779749145331
+          isPrivate: false
+          description: ""
+          sortKey: 400
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "mensagem": "Equipamento consumindo mais do que deveria",
+              "setor": {
+                "id": 1
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjYWxvcmlhcyIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiZXhwIjoxNzc5NzU2MjA4fQ.sS-daeJcMQnzb903v8WnxbqmQPWAuqdGrfOCr-rv43A
+          prefix: Bearer
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Empresas
+    meta:
+      id: fld_fb3a5eea60fb448a84ee094e4c7a6da3
+      created: 0
+      modified: 0
+      sortKey: 300
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/api/empresas"
+        name: Listar empresas
+        meta:
+          id: req_06c2395eaca54233bbeb49a9af79cb90
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 100
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/empresas/1"
+        name: Buscar empresa por id
+        meta:
+          id: req_167b468b9ec44e45ac679c8dbc10d4d5
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 200
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/empresas"
+        name: Criar empresa
+        meta:
+          id: req_17879d0ad60d49a6bf43255cc06775f0
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 400
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "name": "Empresa ESG",
+              "cnpj": "12345678000199"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/empresas/1"
+        name: Deletar empresa
+        meta:
+          id: req_9f8f11de0cf3423f8941940facdca92f
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 600
+        method: DELETE
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/empresas"
+        name: Atualizar empresa
+        meta:
+          id: req_ec26549f3d9f4736b55bb38ef8ec237b
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 500
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "id": 1,
+              "name": "Empresa ESG Atualizada",
+              "cnpj": "12345678000199"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/empresas/"
+        name: Buscar empresa por nome
+        meta:
+          id: req_fe1da3288188455b9f762dbfadd71ec1
+          created: 0
+          modified: 0
+          isPrivate: false
+          description: ""
+          sortKey: 300
+        method: GET
+        parameters:
+          - name: name
+            value: Empresa ESG
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_d6ad17724570b4e9b3edab106848a7717d8351da
+    created: 1779744881360
+    modified: 1779744881360
+environments:
+  name: Base Environment
+  meta:
+    id: env_1a828194ef7c4a438ccd2adeed961323
+    created: 0
+    modified: 0
+    isPrivate: false
+  data:
+    base_url: http://localhost:8080
