@@ -1,19 +1,202 @@
-# Spring Backend ESG
+# Projeto - Cidades ESGInteligentes
 
-API REST em Java com Spring Boot para gerenciamento de empresas, setores, equipamentos, consumos de energia, alertas e usuarios, com autenticacao JWT e controle de acesso por perfil.
+API REST em Java com Spring Boot para gerenciamento de empresas, setores, equipamentos, consumos de energia, alertas e usuarios, com autenticacao JWT e controle de acesso por perfil. O projeto conta com pipeline de CI/CD no GitHub Actions, imagem Docker e orquestração com Docker Compose para os ambientes de staging e produção.
 
-## Tecnologias
+## Como executar localmente com Docker
 
-- Java 21
-- Spring Boot
-- Spring Web
-- Spring Security
-- Spring Data JPA
-- Bean Validation
-- Flyway
-- Oracle Database
-- Lombok
-- JWT com `java-jwt`
+Pré-requisitos: Docker e Docker Compose instalados.
+
+1. Clone o repositório e entre na pasta do projeto:
+
+```bash
+git clone https://github.com/CassioLinhares/ESG_javaSpring_devOps.git
+cd ESG_javaSpring_devOps
+```
+
+2. Crie o arquivo de variáveis de ambiente a partir do modelo:
+
+```bash
+cp .env.example .env
+```
+
+3. Gere a imagem e suba a aplicação com o banco:
+
+```bash
+docker compose up -d --build
+```
+
+4. Acompanhe os serviços até o Oracle ficar `healthy` e a aplicação iniciar:
+
+```bash
+docker compose ps
+docker compose logs -f app
+```
+
+5. Teste a API em `http://localhost:8080`:
+
+```bash
+curl -X POST http://localhost:8080/auth/register -H "Content-Type: application/json" -d '{"nome":"Admin","email":"admin@example.com","senha":"123456","role":"ADMIN"}'
+curl -X POST http://localhost:8080/auth/login -H "Content-Type: application/json" -d '{"email":"admin@example.com","senha":"123456"}'
+```
+
+6. Para encerrar o ambiente:
+
+```bash
+docker compose down
+```
+
+Para apagar também os dados do banco:
+
+```bash
+docker compose down -v
+```
+
+Para simular os dois ambientes na mesma máquina, cada um com seu próprio banco, volume e rede:
+
+```bash
+APP_PORT=8081 docker compose -p esg-staging up -d --build
+APP_PORT=8080 docker compose -p esg-production up -d
+```
+
+### Serviços do Compose
+
+| Recurso | Descrição |
+| --- | --- |
+| `oracle` | Banco Oracle XE 21 com o usuário da aplicação criado no PDB `XEPDB1` |
+| `app` | API Spring Boot, iniciada somente após o banco ficar saudável |
+| `oracle-data` | Volume nomeado com os dados do banco |
+| `esg-network` | Rede bridge usada na comunicação entre os serviços |
+
+### Variáveis de ambiente
+
+| Variável | Uso | Padrão |
+| --- | --- | --- |
+| `APP_IMAGE` | Imagem da aplicação | `spring-backend-esg:latest` |
+| `APP_PORT` | Porta exposta no host | `8080` |
+| `ORACLE_PASSWORD` | Senha do `SYSTEM` do Oracle | `oracle` |
+| `DB_USER` | Usuário da aplicação no banco | `esg` |
+| `DB_PASSWORD` | Senha do usuário da aplicação | `esg123` |
+| `JWT_SECRET` | Chave de assinatura do JWT | `troque-esta-chave` |
+
+A aplicação recebe a conexão e a chave JWT pelas variáveis `SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME`, `SPRING_DATASOURCE_PASSWORD` e `MINHA_PALAVRA_SECRETA`, preenchidas pelo `docker-compose.yml`.
+
+## Pipeline CI/CD
+
+**Ferramentas:** GitHub Actions, Maven Wrapper, Docker Buildx, GitHub Container Registry (GHCR), GitHub Environments e Docker Compose.
+
+O pipeline fica em `.github/workflows/ci-cd.yml` e é disparado a cada push e pull request para a `main`, ou manualmente pela aba Actions (`workflow_dispatch`).
+
+```text
+Build ──> Testes ──> Imagem Docker ──> Deploy Staging ──> Deploy Produção
+```
+
+| Etapa | O que faz |
+| --- | --- |
+| `Build` | Configura o JDK 21 com cache do Maven, compila e empacota a aplicação com `./mvnw package` e publica o `.jar` como artefato |
+| `Testes` | Sobe um Oracle XE como service container e executa `./mvnw test`. O teste carrega o contexto do Spring e aplica as migrations do Flyway no banco. Os relatórios do Surefire ficam como artefato |
+| `Imagem Docker` | Gera a imagem pelo `Dockerfile` com cache do GitHub Actions e, fora de pull requests, publica no GHCR com as tags do commit e `latest` |
+| `Deploy Staging` | Usa o environment `staging`, baixa a imagem do commit no GHCR, sobe a aplicação com o Docker Compose e executa um smoke test de cadastro e login |
+| `Deploy Produção` | Usa o environment `production` e só roda depois do staging concluir com sucesso, repetindo o deploy e o smoke test |
+
+**Funcionamento:**
+
+- Cada etapa depende da anterior (`needs`), então uma falha no build ou nos testes interrompe o pipeline antes de gerar imagem ou fazer deploy.
+- Em pull requests rodam build, testes e a geração da imagem, sem publicar nem fazer deploy.
+- Em push na `main` a imagem é publicada e os deploys acontecem em sequência: primeiro staging, depois produção.
+- Os deploys sobem o `docker-compose.yml` no runner do GitHub, cada ambiente com seu projeto Compose, banco, volume, rede e porta (`8081` em staging e `8080` em produção).
+- Os environments `staging` e `production` podem ser configurados em Settings > Environments. Neles é possível exigir aprovação manual antes do deploy e cadastrar os secrets `ORACLE_PASSWORD`, `DB_PASSWORD` e `JWT_SECRET` e a variável `DB_USER`. Sem esses valores o pipeline usa os padrões do `.env.example`.
+
+## Containerização
+
+```dockerfile
+FROM eclipse-temurin:21-jdk AS build
+WORKDIR /workspace
+COPY .mvn .mvn
+COPY mvnw pom.xml ./
+RUN chmod +x mvnw && ./mvnw -B -q dependency:go-offline
+COPY src src
+RUN ./mvnw -B -q package -DskipTests
+
+FROM eclipse-temurin:21-jre
+LABEL authors="cassio linhares"
+WORKDIR /app
+RUN groupadd --system spring && useradd --system --gid spring spring
+COPY --from=build /workspace/target/spring_backend_esg-0.0.1-SNAPSHOT.jar app.jar
+USER spring
+VOLUME /tmp
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
+```
+
+**Estratégias adotadas:**
+
+- **Multi-stage build:** a primeira etapa compila com o JDK e o Maven Wrapper, a segunda leva apenas o `.jar` para uma imagem JRE, que é menor e não carrega ferramentas de build.
+- **Cache de dependências:** `pom.xml` e o wrapper são copiados antes do código, então as dependências só são baixadas de novo quando o `pom.xml` muda.
+- **Usuário sem privilégios:** a aplicação roda com o usuário `spring`, e não como root.
+- **Build independente da máquina:** não é preciso gerar o `.jar` antes do `docker build`.
+- **`.dockerignore`:** deixa `target`, `.git`, arquivos de IDE e o `.env` fora do contexto da imagem.
+- **Configuração por ambiente:** nenhuma credencial fica na imagem; banco e JWT chegam por variáveis de ambiente.
+
+Para gerar a imagem manualmente:
+
+```bash
+docker build -t spring-backend-esg .
+```
+
+## Prints do funcionamento
+
+Execuções do pipeline no GitHub Actions: [workflow CI/CD](https://github.com/CassioLinhares/ESG_javaSpring_devOps/actions/workflows/ci-cd.yml)
+
+Execução com deploy em staging e produção: [CI/CD #4 na main](https://github.com/CassioLinhares/ESG_javaSpring_devOps/actions/runs/38333744179)
+
+Documentação técnica com as evidências: [docs/documentacao-tecnica.pdf](docs/documentacao-tecnica.pdf)
+
+### Pipeline
+
+![Pipeline](docs/evidencias/01-pipeline.png)
+
+### Build
+
+![Build](docs/evidencias/02-build.png)
+
+### Testes
+
+![Testes](docs/evidencias/03-testes.png)
+
+### Imagem Docker
+
+![Imagem Docker](docs/evidencias/04-imagem-docker.png)
+
+### Deploy em staging
+
+![Deploy Staging](docs/evidencias/05-deploy-staging.png)
+
+### Deploy em produção
+
+![Deploy Produção](docs/evidencias/06-deploy-producao.png)
+
+### Ambientes com Docker Compose
+
+![Docker Compose](docs/evidencias/07-compose.png)
+
+![Staging](docs/evidencias/08-staging.png)
+
+![Produção](docs/evidencias/09-producao.png)
+
+## Tecnologias utilizadas
+
+| Categoria | Tecnologias |
+| --- | --- |
+| Linguagem | Java 21 |
+| Framework | Spring Boot 4 (Spring Web MVC, Spring Security, Spring Data JPA, Bean Validation) |
+| Banco de dados | Oracle Database (Oracle XE 21 nos containers) |
+| Migrations | Flyway |
+| Autenticação | JWT com `java-jwt` |
+| Build | Maven Wrapper |
+| Testes | JUnit 5 e Spring Boot Test |
+| Utilitários | Lombok |
+| Containerização | Docker (multi-stage) e Docker Compose |
+| CI/CD | GitHub Actions, GitHub Environments e GitHub Container Registry |
 
 ## Banco De Dados
 
@@ -56,7 +239,7 @@ spring.datasource.username=RM565388
 spring.datasource.password=fiap26
 ```
 
-## Como Executar
+## Como Executar Sem Docker
 
 No terminal, na raiz do projeto:
 
@@ -256,61 +439,14 @@ Para executar os testes:
 .\mvnw.cmd test
 ```
 
-## Docker
+## Checklist de entrega
 
-A imagem é gerada em duas etapas pelo `Dockerfile`: a primeira compila o projeto com o Maven Wrapper e a segunda executa apenas o `.jar` em uma JRE 21 com usuário sem privilégios.
-
-```bash
-docker build -t spring-backend-esg .
-```
-
-## Docker Compose
-
-O `docker-compose.yml` sobe a aplicação junto com um Oracle XE 21:
-
-| Recurso | Descrição |
+| Item | OK |
 | --- | --- |
-| `oracle` | Banco Oracle XE com o usuário da aplicação criado no PDB `XEPDB1` |
-| `app` | API Spring Boot, iniciada somente após o banco ficar saudável |
-| `oracle-data` | Volume nomeado com os dados do banco |
-| `esg-network` | Rede bridge usada na comunicação entre os serviços |
-
-As variáveis de ambiente ficam em um arquivo `.env` (modelo em `.env.example`):
-
-| Variável | Uso | Padrão |
-| --- | --- | --- |
-| `APP_IMAGE` | Imagem da aplicação | `spring-backend-esg:latest` |
-| `APP_PORT` | Porta exposta no host | `8080` |
-| `ORACLE_PASSWORD` | Senha do `SYSTEM` do Oracle | `oracle` |
-| `DB_USER` | Usuário da aplicação no banco | `esg` |
-| `DB_PASSWORD` | Senha do usuário da aplicação | `esg123` |
-| `JWT_SECRET` | Chave de assinatura do JWT | `troque-esta-chave` |
-
-```bash
-cp .env.example .env
-docker compose up -d --build
-docker compose ps
-docker compose down
-```
-
-Para apagar também os dados do banco:
-
-```bash
-docker compose down -v
-```
-
-## CI/CD
-
-O pipeline fica em `.github/workflows/ci-cd.yml` e roda no GitHub Actions a cada push e pull request para a `main`, ou manualmente pela aba Actions.
-
-| Job | O que faz |
-| --- | --- |
-| `Build` | Compila e empacota a aplicação com `./mvnw package` e publica o `.jar` como artefato |
-| `Testes` | Sobe um Oracle XE como service container e executa `./mvnw test` com as migrations do Flyway |
-| `Imagem Docker` | Gera a imagem pelo `Dockerfile` e, fora de pull requests, publica no GitHub Container Registry com as tags do commit e `latest` |
-| `Deploy Staging` | Usa o environment `staging`, sobe a imagem publicada com o Docker Compose e valida cadastro e login na API |
-| `Deploy Produção` | Usa o environment `production` e só roda depois do staging concluir com sucesso |
-
-Em pull requests rodam build, testes e a geração da imagem. Os deploys rodam em push na `main` ou pela execução manual.
-
-Os environments `staging` e `production` podem ser configurados em Settings > Environments. Neles é possível exigir aprovação manual antes do deploy e cadastrar os secrets `ORACLE_PASSWORD`, `DB_PASSWORD` e `JWT_SECRET` e a variável `DB_USER`. Sem esses valores o pipeline usa os padrões do `.env.example`.
+| Projeto compactado em .ZIP com estrutura organizada | OK |
+| Dockerfile funcional | OK |
+| docker-compose.yml ou arquivos Kubernetes | OK |
+| Pipeline com etapas de build, teste e deploy | OK |
+| README.md com instruções e prints | OK |
+| Documentação técnica com evidências (PDF ou PPT) | OK |
+| Deploy realizado nos ambientes staging e produção | OK |
