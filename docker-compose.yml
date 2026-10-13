@@ -1,0 +1,43 @@
+services:
+  oracle:
+    image: gvenzl/oracle-xe:21-slim-faststart
+    restart: unless-stopped
+    environment:
+      ORACLE_PASSWORD: ${ORACLE_PASSWORD:-oracle}
+      APP_USER: ${DB_USER:-esg}
+      APP_USER_PASSWORD: ${DB_PASSWORD:-esg123}
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+    networks:
+      - esg-network
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  app:
+    image: ${APP_IMAGE:-spring-backend-esg:latest}
+    build: .
+    restart: unless-stopped
+    depends_on:
+      oracle:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:oracle:thin:@//oracle:1521/XEPDB1
+      SPRING_DATASOURCE_USERNAME: ${DB_USER:-esg}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-esg123}
+      MINHA_PALAVRA_SECRETA: ${JWT_SECRET:-troque-esta-chave}
+      SPRING_JPA_SHOW_SQL: "false"
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    networks:
+      - esg-network
+
+volumes:
+  oracle-data:
+
+networks:
+  esg-network:
+    driver: bridge
